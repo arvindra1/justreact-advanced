@@ -5,12 +5,12 @@ const MagnifyImage = ({
   width = 600,
   height = 600,
 }: {
-  src: string;
-  width: number;
-  height: number;
+  src: any;
+  width?: number;
+  height?: number;
 }) => {
-  const [zoom, setZoom] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState<boolean>(false);
+  const [position, setPosition] = useState<any>({ x: 0, y: 0 });
 
   const handleMouseMove = (e: any) => {
     const { left, top, width, height } = e.target.getBoundingClientRect();
