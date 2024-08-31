@@ -1,6 +1,4 @@
-
-
- function ImageSave(blob: string, name: string = "Download"): void {
+function ImageSave(blob: string, name: string = "Download"): void {
   const data: Uint8Array = Uint8Array.from(atob(blob), (c: string) =>
     c.charCodeAt(0)
   );
@@ -13,7 +11,7 @@
   anchor.remove();
 }
 
- function PDF(blob: string, name = "Download") {
+function PDF(blob: string, name = "Download") {
   const data = Uint8Array.from(atob(blob), (c) => c.charCodeAt(0));
   const file = new Blob([data], { type: "application/pdf" });
   const url = URL.createObjectURL(file);
@@ -24,7 +22,7 @@
   anchor.remove();
 }
 
- function Excel(blob: string, name = "Download") {
+function Excel(blob: string, name = "Download") {
   try {
     // Validate and sanitize the input blob
     if (!/^[A-Za-z0-9+/=]*$/.test(blob)) {
@@ -51,7 +49,7 @@
   }
 }
 
- function Download(blob: any, name = "Download") {
+function Download(blob: any, name = "Download") {
   const file = new Blob(blob);
   const url = URL.createObjectURL(file);
   const anchor = document.createElement("a");
@@ -61,7 +59,7 @@
   anchor.remove();
 }
 
- function StrToByte(str: string) {
+function StrToByte(str: string) {
   var bytes = new Uint8Array(str.length);
   for (var i = 0; i < str.length; i++) {
     bytes[i] = str.charCodeAt(i);
@@ -69,7 +67,7 @@
   return bytes;
 }
 
- function ZipSave(blob: string, name = "Download") {
+function ZipSave(blob: string, name = "Download") {
   const file = new Blob([blob], { type: "application/gzip" });
   const url = URL.createObjectURL(file);
   const anchor = document.createElement("a");
@@ -79,4 +77,27 @@
   anchor.remove();
 }
 
-export { Download, ZipSave, ImageSave, StrToByte, Excel, PDF,}
+interface prop {
+  name: string;
+  blob: any;
+  type?: "csv" | "excel" | "pdf" | "image" | "zip" | undefined;
+}
+
+const fileSave = ({ name, blob, type }: prop) => {
+  switch (type) {
+    case "csv":
+      return Download(blob, `${name}.csv`);
+    case "excel":
+      return Excel(blob, name);
+    case "pdf":
+      return PDF(blob, name);
+    case "image":
+      return ImageSave(blob, name);
+    case "zip":
+      return ZipSave(blob, name);
+    default:
+      return Download(blob, name);
+  }
+};
+
+export { fileSave };
